@@ -1,0 +1,20 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.2"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "react-spinners": "^0.13.8",
+    "sweetalert2-react-content": "^5.0.7",
+    "thirdweb": "^5.3.1",
+    "uuid": "^9.0.1"
+  },
+  "scripts": {
+    "build": "npx thirdweb@latest detect",
+    "deploy": "npx thirdweb@latest deploy",
+    "release": "npx thirdweb@latest release",
+    "test": "npx hardhat test"
+  }
+}
