@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-// pragma solidity ^0.8.24;
+pragma solidity ^0.8.24;
 
 // import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -13,7 +13,7 @@ contract MediGrid is Ownable(msg.sender) {
    
     // IERC20 private _token;
     // Matic Token contract address on Amoy Testnet
-    //address constant _tokenAddress = 0x0000000000000000000000000000000000001010;
+    address constant _tokenAddress = 0x0000000000000000000000000000000000001010;
 
     using SafeERC20 for ERC20;
     address constant ETHER = address(0);
@@ -219,7 +219,7 @@ contract MediGrid is Ownable(msg.sender) {
             amount = distMemFee;
         }
 
-        // bool status = ERC20(_tokenAddress).transfer(address(this), amount);
+        bool status = ERC20(_tokenAddress).transfer(address(this), amount);
 
         user.hasPaidFee = true;
 
@@ -337,29 +337,29 @@ contract MediGrid is Ownable(msg.sender) {
      * @dev Withdraw asset.
      * @param amount to  Asset to be withdrawn.
      */
-    // function withdraw(uint256 amount) public onlyOwner {
-    //     // address _assetAddress (this will help to implement this for other assets)
-    //     // uint256 assetBalance;
-    //     // if (_tokenAddress == ETHER) {
-    //     //     address self = address(this); // workaround for a possible solidity bug
-    //     //     assetBalance = self.balance;
-    //     //     msg.sender.transfer(assetBalance);
-    //     // } else {
+    function withdraw(uint256 amount) public onlyOwner {
+        // address _assetAddress (this will help to implement this for other assets)
+        // uint256 assetBalance;
+        // if (_tokenAddress == ETHER) {
+        //     address self = address(this); // workaround for a possible solidity bug
+        //     assetBalance = self.balance;
+        //     msg.sender.transfer(assetBalance);
+        // } else {
             
-    //     // }
-    // //    uint256 assetBalance = ERC20(_tokenAddress).balanceOf(address(this));
+        // }
+       uint256 assetBalance = ERC20(_tokenAddress).balanceOf(address(this));
             
-    //     require(amount <= assetBalance, "Insufficient balance");
+        require(amount <= assetBalance, "Insufficient balance");
 
-    //     // ERC20(_tokenAddress).safeTransfer(msg.sender, amount);
-    //     // ERC20(_tokenAddress).transfer(msg.sender, amount);
+        // ERC20(_tokenAddress).safeTransfer(msg.sender, amount);
+        ERC20(_tokenAddress).transfer(msg.sender, amount);
 
-    //     emit LogWithdraw(msg.sender, _tokenAddress, amount);
-    // }
+        emit LogWithdraw(msg.sender, _tokenAddress, amount);
+    }
 
-    // function getProtocolBalance() view external returns(uint256){
-    //     return address(this).balance;
-    // }
+    function getProtocolBalance() view external returns(uint256){
+        return address(this).balance;
+    }
         
     
 }

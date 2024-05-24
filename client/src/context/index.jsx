@@ -25,7 +25,9 @@ import {
 import {
   calculateBarPercentage,
   formattedUser,
+  submitMedicationToCMS,
   formattedUsers,
+  getRandomNumber,
 } from "../utils";
 
 const metamaskConfig = metamaskWallet();
@@ -34,8 +36,13 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract, isLoading, isError } = useContract(
-    "0x6C02BbB3116ddA500d983015f0618dd99444a63D"
+    "0xE024cD546C6682C1a46b0A1ddAD3f36D3DA6Bc2a"
   );
+
+  // 0x30fF434B91a530280E2EC3a34B93b505c2C1dC0D
+  // "0x6C02BbB3116ddA500d983015f0618dd99444a63D"
+  //
+
   // 0x0c4A0218352c49C8605f6df7f544c70FC0c2E445
 
   // 0xd5EBe541AeDB4A2a412173718a8bA75BEd6474c9
@@ -158,7 +165,7 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
-  const addMedication = async (medicationFhirResource) => {
+  const addMedication = async (medicationFhirResource, orgCid) => {
     try {
       // Upload to IPFS
       const data = await uploadToIpfs(medicationFhirResource);
@@ -167,11 +174,31 @@ export const StateContextProvider = ({ children }) => {
       // QmXJ7MQxdB2cR7SshhH7UpYgCeYTdRNCmeuZB8DzYoeTrV
 
       const dataUrl = data[0].split("//")[1];
-      await addDrug({
+
+      const result = await addDrug({
         args: [dataUrl],
       });
 
-      console.log("URL of data", dataUrl);
+      if (result) {
+        console.log("result", result);
+
+        const cmsData = {
+          sid: getRandomNumber(100000),
+          cid: dataUrl,
+          trxHash: result.receipt.transactionHash,
+          orgCid,
+          uuid: medicationFhirResource.id,
+          extras: {
+            supplyRequest: [],
+            supplyResponse: [],
+          },
+        };
+
+        console.log("cms", cmsData);
+
+        // Submit metadata to CMS
+        await submitMedicationToCMS(cmsData);
+      }
 
       Swal.fire({
         title: "Submitted",
@@ -307,6 +334,7 @@ export const StateContextProvider = ({ children }) => {
       const cleanUser = formattedUser(user);
       cleanUser["owner"] = user.userAddress;
       cleanUser["data"] = await downloadFromIPFs(user.data);
+      cleanUser["ipfs"] = user.data;
 
       console.log(cleanUser);
       return cleanUser;
@@ -355,6 +383,45 @@ export const StateContextProvider = ({ children }) => {
     }
 
     // return data;
+  };
+
+  const getDrugs = async () => {
+    const drugs = await contract.call("getAllDrugs");
+
+    const formattedDrugs = [];
+
+    for (const drug of drugs) {
+      const data = await downloadFromIPFs(drug.data);
+
+      const manufacturer = await getUserDetail(drug.addedBy);
+
+      const formattedDrug = {
+        id: Number(drug.id),
+        data,
+        orgName: manufacturer?.data?.orgData?.name || "",
+      };
+      formattedDrugs.push(formattedDrug);
+    }
+
+    formattedDrugs.reverse();
+
+    return formattedDrugs;
+  };
+
+  const getDrug = async (drugId) => {
+    const drug = await contract.call("getDrug", [Number(drugId)]);
+
+    const data = await downloadFromIPFs(drug.data);
+
+    const manufacturer = await getUserDetail(drug.addedBy);
+
+    const formattedDrug = {
+      id: Number(drug.id),
+      data,
+      orgName: manufacturer?.data?.orgData?.name || "",
+    };
+
+    return formattedDrug;
   };
 
   // const formatCampaignData = (campaign, ipfsData, index) => {
@@ -446,6 +513,8 @@ export const StateContextProvider = ({ children }) => {
         approveOrDeclineUser,
         getAdmin,
         addMedication,
+        getDrugs,
+        getDrug,
         isContractLoading: isLoading,
       }}
     >

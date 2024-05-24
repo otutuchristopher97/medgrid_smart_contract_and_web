@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
+    "axios": "^1.6.8",
     "react-spinners": "^0.13.8",
     "sweetalert2-react-content": "^5.0.7",
     "thirdweb": "^5.3.1",

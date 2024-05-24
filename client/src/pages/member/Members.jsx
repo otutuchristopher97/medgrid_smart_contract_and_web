@@ -16,7 +16,7 @@ const Members = () => {
 
   const [fee, setFee] = useState({});
 
-  const [latestUsers, setlatestUsers] = useState([]);
+  // const [latestUsers, setlatestUsers] = useState([]);
 
   const fetchFee = async () => {
     const fee = await getMemberShipFee();
@@ -27,16 +27,20 @@ const Members = () => {
     if (!isContractLoading) {
       const users = await getUsers();
       //   setUsers(users);
-      if (users.length <= 4) {
-        setlatestUsers(users);
-      } else {
-        const latests = users.filter((user, i) => i <= 4);
-        setlatestUsers(latests);
+      // if (users.length <= 4) {
+      //   setlatestUsers(users);
+      // } else {
+      //   const latests = users.filter((user, i) => i <= 4);
+      //   setlatestUsers(latests);
 
-        setUsers(users);
-      }
+      //   setUsers(users);
+      // }
 
-      setLoading((prev) => !prev);
+      setUsers(users);
+
+      setLoading(false);
+
+      console.log("loading is....", loading);
 
       console.log(users);
     }
@@ -46,7 +50,6 @@ const Members = () => {
 
   useEffect(() => {
     fetchAllUsers();
-
     fetchFee();
   }, [address, isContractLoading]);
 
@@ -67,8 +70,8 @@ const Members = () => {
                 <Skeleton count={3} />
               ) : (
                 <>
-                  {latestUsers.map((user) => (
-                    <div className="col-md-6 col-xl-4">
+                  {users.map((user, i) => (
+                    <div className="col-md-6 col-xl-4" key={i + 1}>
                       <div className="completed_project__item br2 rounded-3 bg1-color px-5 px-md-6 py-3 py-sm-6 py-lg-10 wow fadeInUp">
                         <div className="completed_project__itemhead d-flex gap-3 mb-7 mb-md-10">
                           <div className="completed_project__itemhead-icon">
@@ -79,10 +82,12 @@ const Members = () => {
                           </div>
                           <div className="completed_project__itemhead-content">
                             <a href="javascript:void(0)">
-                              <h3 className="mb-1">{user.data.orgData.name}</h3>
+                              <h3 className="mb-1">
+                                {user?.data?.orgData?.name || ""}
+                              </h3>
                             </a>
                             <span className="fs-five">
-                              {user.data.orgData.alias || ""}
+                              {user?.data?.orgData?.alias || ""}
                             </span>
                           </div>
                         </div>
@@ -90,14 +95,14 @@ const Members = () => {
                           <div className="text-start">
                             <span className="fs-five mb-1">Status:</span>
                             <h3 className="p2-color">
-                              {user.status === UserStatus.VERIFIED
+                              {user?.status === UserStatus.VERIFIED
                                 ? "Verified"
                                 : "Unverified"}
                             </h3>
                           </div>
                           <div className="text-end mb-3">
                             <Link
-                              to={`/members/${user.owner}`}
+                              to={`/members/${user?.owner}`}
                               className="cmn-btn py-3 h-25 px-5 px-md-6 d-block w-100"
                             >
                               View Details
@@ -112,7 +117,7 @@ const Members = () => {
                           <div className="completed_project__ccard-citem d-flex align-items-center justify-content-between mb-3">
                             <span className="roboto">Membership Fee</span>
                             <span className="roboto">
-                              {user.userType === UserType.MANUFACTURER
+                              {user?.userType === UserType.MANUFACTURER
                                 ? fee.manMemFee
                                 : fee.distMemFee}
                               MATIC
@@ -121,18 +126,18 @@ const Members = () => {
                           <div className="completed_project__ccard-citem d-flex align-items-center justify-content-between mb-3">
                             <span className="roboto">Payment status</span>
                             <span className="roboto">
-                              {user.hasPaidFee ? "PAID" : "UNPAID"}
+                              {user?.hasPaidFee ? "PAID" : "UNPAID"}
                             </span>
                           </div>
                           <div className="completed_project__ccard-citem d-flex align-items-center justify-content-between flex-wrap mb-3">
                             <span className="roboto">Verification Docs</span>
                             <span className="roboto">
-                              {user.hasDoc ? "Available" : "Unavailable"}
+                              {user?.hasDoc ? "Available" : "Unavailable"}
                             </span>
                           </div>
                           <div className="completed_project__ccard-citem d-flex align-items-center justify-content-between flex-wrap mb-3">
                             <span className="roboto">Organization Owner</span>
-                            <span className="roboto">{user.owner}</span>
+                            <span className="roboto">{user?.owner}</span>
                           </div>
                           {/* <div className="completed_project__ccard-citem d-flex align-items-center justify-content-between flex-wrap mb-3">
                             <span className="roboto">Verification Status</span>

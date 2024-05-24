@@ -75,7 +75,7 @@ const MemberDetail = () => {
                         href="javascript:void(0)"
                         className="cyber_arena__tphead-name"
                       >
-                        <h2>{user?.data?.orgData?.name}</h2>
+                        <h2>{user?.data?.orgData?.name || ""}</h2>
                       </a>
                     </div>
                     <div className="cyber_arena__tphead-itemtwo d-flex align-items-center gap-3">
@@ -84,15 +84,15 @@ const MemberDetail = () => {
                         type="button"
                         className="px-5 py-2 fs-four bg1-color rounded-1"
                       >
-                        {user.data.orgData.alias}
+                        {user?.data?.orgData?.alias || ""}
                       </button>
                     </div>
                   </div>
 
-                  {currentUser.isAdmin && (
+                  {currentUser?.isAdmin && (
                     <div className="cyber_arena__tophead-viewbtn">
                       <a
-                        href={user.data.doc}
+                        href={user?.data?.doc}
                         target="_blank"
                         className="d-inline-flex align-items-center rounded-2 gap-2 roboto py-3 px-5 px-md-6 bg8-color p7-color fw-bold"
                       >
@@ -113,7 +113,7 @@ const MemberDetail = () => {
                       data-odometer-final="4390.13"
                     ></span>
                     <span className="fs-three fw_500">
-                      {user.hasDoc ? "Available" : "Unavailable"}
+                      {user?.hasDoc ? "Available" : "Unavailable"}
                     </span>
                   </div>
                   <span className="text-center fs-ten">Has Document</span>
@@ -128,7 +128,7 @@ const MemberDetail = () => {
                     ></span>
                     {/* <span className="fs-three fw_500">/</span> */}
                     <span className="fs-three fw_500">
-                      {user.hasPaidFee ? "PAID" : "UNPAID"}
+                      {user?.hasPaidFee ? "PAID" : "UNPAID"}
                     </span>
                     <span
                       className="odometer hero_area__countdown-number fs-three fw_500"
@@ -144,7 +144,7 @@ const MemberDetail = () => {
                       className="odometer hero_area__countdown-number fs-three fw_500"
                       data-odometer-final="28,751"
                     >
-                      {user.isVerified ? "Verified" : "Unverified"}
+                      {user?.isVerified ? "Verified" : "Unverified"}
                     </span>
                   </div>
                   <span className="text-center fs-ten">Account Verified</span>
@@ -157,9 +157,9 @@ const MemberDetail = () => {
                   Organization Details
                 </h3>
                 <p className="roboto mb-3 mb-md-5 wow fadeInUp">{`${
-                  user.data.orgData.name
+                  user?.data?.orgData?.name || ""
                 } is a  ${
-                  user.userType === UserType.MANUFACTURER
+                  user?.userType === UserType.MANUFACTURER
                     ? "Manufacturer"
                     : "Distributor"
                 } applying to join MediGrid protocol`}</p>
@@ -171,7 +171,7 @@ const MemberDetail = () => {
                       <span className="mb-3 fs-ten">Organization Address</span>
                       <div className="d-flex align-items-end gap-2">
                         <span className="fs-four p1-color fw-bold">
-                          {user.data.orgData.address[0].text}
+                          {user?.data?.orgData?.address[0]?.text}
                         </span>
                         <span className="fs-ten">USDT</span>
                       </div>
@@ -189,17 +189,22 @@ const MemberDetail = () => {
                   <div className="cyber_arena__nastcard p-5 p-md-6 rounded-20 bg1-color d-flex flex-column gap-4 gap-md-6 br2">
                     <div className="d-flex align-items-center justify-content-between gap-4 flex-wrap flex-sm-nowrap">
                       <span>Contact Person Name</span>
-                      <span> {user.data.orgData.contact[0].name.text}</span>
+                      <span>
+                        {user?.data?.orgData?.contact[0]?.name?.text || ""}
+                      </span>
                     </div>
                     <div className="d-flex align-items-center justify-content-between gap-4 flex-wrap flex-sm-nowrap">
                       <span>Contact Person Email</span>
                       <span>
-                        {user.data.orgData.contact[0].telecom[0].value}
+                        {user.data?.orgData?.contact[0]?.telecom[0]?.value ||
+                          ""}
                       </span>
                     </div>
                     <div className="d-flex align-items-center justify-content-between gap-4 flex-wrap flex-sm-nowrap">
                       <span>Organization Type</span>
-                      <span>{user.data.orgData.type[0].coding[0].display}</span>
+                      <span>
+                        {user?.data?.orgData?.type[0]?.coding[0]?.display || ""}
+                      </span>
                     </div>
 
                     <div className="d-flex align-items-center justify-content-between gap-4 flex-wrap flex-sm-nowrap">
@@ -210,11 +215,11 @@ const MemberDetail = () => {
                 </div>
               </div>
 
-              {currentUser.isAdmin && (
+              {currentUser?.isAdmin && (
                 <div className="col-md-4 col-xl-3">
                   <div className="cyber_arena__totalcardtwo bg1-color rounded-20 br2 py-7 py-md-9 px-5 px-md-6 br2 text-center">
                     <div className="cyber_arena__tophead-viewbtn">
-                      {!user.isVerified ? (
+                      {!user?.isVerified ? (
                         <>
                           <button
                             onClick={() => showSwal(true)}

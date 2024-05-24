@@ -18,9 +18,9 @@ export default function Home() {
       <HeroSection />
       <BrandSliderSection />
       <ExplorerSection />
-      {/* <MarketSection /> */}
+      <MarketSection />
       <GetStartedSection />
-      {/* <DiscoverSection /> */}
+      <DiscoverSection />
       {/* <EarnCrypto /> */}
       {/* <TrustSecuritySection /> */}
       {/* <OneStepShop /> */}

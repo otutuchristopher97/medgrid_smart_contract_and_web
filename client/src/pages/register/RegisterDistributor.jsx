@@ -138,6 +138,25 @@ const RegisterDistributor = () => {
 
   const handleSubmit = async () => {
     if (address) {
+      if (
+        !formData.name ||
+        !formData.alias ||
+        !formData.type ||
+        !formData.email ||
+        !formData.phone ||
+        !formData.address ||
+        !formData.contactFullName ||
+        !formData.contactPersonEmail
+      ) {
+        Swal.fire({
+          title: "Oops! All fields are required!",
+          text: "You have not fill al fields required",
+          icon: "error",
+        });
+
+        return;
+      }
+
       await addNewUser(buildFhirOrgResource(), "distributor");
       setIsLoading((prev) => !prev);
     } else {

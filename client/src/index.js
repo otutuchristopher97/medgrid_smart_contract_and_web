@@ -16,7 +16,7 @@ root.render(
   <React.StrictMode>
     <ThirdwebProvider
       activeChain={PolygonAmoyTestnet}
-      clientId="3390f86b0b10783037ffb6d46a700a3c"
+      clientId="2ac10f8ea884c23d641c4de2e5ed625e"
     >
       <Router>
         <StateContextProvider>

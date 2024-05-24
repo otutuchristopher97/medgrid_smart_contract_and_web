@@ -37,12 +37,12 @@ const Join = () => {
               <div className="buy_Preferred__card-thumb">
                 <img src="/png/visa-mastercard1.png" alt="image" />
               </div>
-              <Link
-                to="/register/manufacturer"
+              <a
+                href="/register/manufacturer"
                 className="cmn-btn py-3 px-5 px-md-6 d-block"
               >
                 Join Manufacturer Network
-              </Link>
+              </a>
             </div>
           </div>
           <div className="col-xl-6">
@@ -61,12 +61,12 @@ const Join = () => {
               <div className="buy_Preferred__card-thumb">
                 <img src="/png/google-pay.png" alt="image" />
               </div>
-              <Link
-                to="/register/distributor"
+              <a
+                href="/register/distributor"
                 className="cmn-btn py-3 px-5 px-md-6 d-block"
               >
                 Join Distributor Network
-              </Link>
+              </a>
             </div>
           </div>
           <div className="col-12">
@@ -88,7 +88,7 @@ const Join = () => {
                   alt="image"
                 />
                 <a
-                  href="javascript:void(0)"
+                  href="/register/distributor"
                   className="cmn-btn py-3 px-5 px-md-6 d-block"
                 >
                   Join Wholesaler Network

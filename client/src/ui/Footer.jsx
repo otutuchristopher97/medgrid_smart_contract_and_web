@@ -81,7 +81,7 @@ const Footer = () => {
                   </li>
                   <li className="dropdown d-flex align-items-center wow fadeInUp">
                     <i className="ti ti-arrow-badge-right fs-ten s2-color"></i>
-                    <Link to="/get-started">How it works```</Link>
+                    <Link to="/get-started">How it works</Link>
                   </li>
                 </ul>
               </div>

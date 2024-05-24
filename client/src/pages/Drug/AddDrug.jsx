@@ -227,12 +227,34 @@ const AddDrug = () => {
 
   const handleSubmit = async () => {
     if (address) {
+      if (
+        !formData.code ||
+        !formData.codeDisplay ||
+        !formData.codeSystem ||
+        !formData.form ||
+        !formData.batchNumber ||
+        !formData.expirationDate
+      ) {
+        Swal.fire({
+          title: "Oops! All fields are required!",
+          text: "You have not fill all fields required",
+          icon: "error",
+        });
+
+        setIsLoading((prev) => !prev);
+
+        return;
+      }
+
       if (!Object.keys(org).length) {
         Swal.fire({
           title: "Oops!",
           text: "You are not not subscribed to the network. Please kindly register as Manufacturer ",
           icon: "error",
         });
+
+        setIsLoading((prev) => !prev);
+
         return;
       }
 
@@ -242,13 +264,16 @@ const AddDrug = () => {
           text: "Only  verified system manufacturers can add drugs",
           icon: "error",
         });
+        setIsLoading((prev) => !prev);
+
         return;
       }
       const orgId = org?.data?.orgData?.identifier[0]?.value;
 
       const medicationFhirResource = buildFhirMedicationResource(orgId);
 
-      await addMedication(medicationFhirResource);
+      await addMedication(medicationFhirResource, org.ipfs);
+
       setIsLoading((prev) => !prev);
     } else {
       await walletConnect();
@@ -300,9 +325,9 @@ const AddDrug = () => {
       code: {
         coding: [
           {
-            system: "http://hl7.org/fhir/sid/ndc",
-            code: "0206-8862-02",
-            display: "Zosyn (piperacillin/tazobactam) 4.5gm injection",
+            system: formData.codeSystem,
+            code: formData.codeSystem,
+            display: formData.codeDisplay,
           },
         ],
       },

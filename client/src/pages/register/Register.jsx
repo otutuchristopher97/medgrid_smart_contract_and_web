@@ -138,6 +138,25 @@ const Register = () => {
 
   const handleSubmit = async () => {
     if (address) {
+      if (
+        !formData.name ||
+        !formData.alias ||
+        !formData.type ||
+        !formData.email ||
+        !formData.phone ||
+        !formData.address ||
+        !formData.contactFullName ||
+        !formData.contactPersonEmail
+      ) {
+        Swal.fire({
+          title: "Oops! All fields are required!",
+          text: "You have not fill al fields required",
+          icon: "error",
+        });
+
+        return;
+      }
+
       await addNewUser(buildFhirOrgResource(), "manufacturer");
       setIsLoading((prev) => !prev);
     } else {
@@ -233,6 +252,7 @@ const Register = () => {
     if (!isContractLoading) {
       console.log("I a here to fetch fee");
       fetchFee();
+      //   }, [address, isContractLoading]);
     }
   }, [address, isContractLoading]);
 

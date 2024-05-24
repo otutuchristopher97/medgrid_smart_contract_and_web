@@ -1,19 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {} from "../utils";
-
 import { useStateContext } from "../context";
 import { shortenText } from "../utils";
+import { UserType } from "../utils";
+const currentUser = JSON.parse(localStorage.getItem("authUser"));
 
 const NavBar = () => {
   const { address, disconnect } = useStateContext();
 
   return (
     <nav className="navbar navbar-expand-lg position-relative py-md-3 py-lg-6 workready">
-      <a href="/" className="navbar-brand d-flex align-items-center gap-2">
+      <a
+        href="/"
+        style={{ width: "120px" }}
+        className="navbar-brand d-flex align-items-center gap-2"
+      >
         <img
           src="/png/logo-1.jpg"
-          style={{ width: "120px" }}
+          style={{ width: "100%" }}
           className="logo"
           alt="logo"
         />
@@ -47,6 +52,20 @@ const NavBar = () => {
               How it Works <i className="ti ti-chevron-down"></i>
             </Link>
           </li>
+
+          {(currentUser?.isAdmin ||
+            currentUser?.userType === UserType.MANUFACTURER) && (
+            <li className="dropdown show-dropdown">
+              <Link
+                to="/register-drug"
+                aria-label="Navbar Dropdown Button"
+                className="dropdown-toggle dropdown-nav d-flex align-items-center fs-ten"
+              >
+                Add Medication <i className="ti ti-chevron-down"></i>
+              </Link>
+            </li>
+          )}
+
           {/* <li className="dropdown show-dropdown">
             <button
               type="button"
